@@ -1,5 +1,6 @@
 package com.example.tiendaonlinespring.DTO;
 
+import com.example.tiendaonlinespring.Modelo.Producto;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,4 +26,25 @@ public class ProductoDTO {
 
     @NotNull(message = "El stock no puede ser nulo")
     private Integer stock;
+
+    public Producto createProducto(ProductoDTO productoDTO) {
+        Producto p = new Producto();
+        p.setNombre(productoDTO.getName());
+        p.setDescripcion(productoDTO.getDescription());
+        p.setPrecio(productoDTO.getPrice());
+        p.setStock(productoDTO.getStock());
+
+        return p;
+    }
+
+    public Producto createProductoWithID(ProductoDTO productoDTO, int id) {
+        Producto p = new Producto();
+        p.setNombre(productoDTO.getName());
+        p.setDescripcion(productoDTO.getDescription());
+        p.setPrecio(productoDTO.getPrice());
+        p.setStock(productoDTO.getStock());
+        p.setId(id);
+
+        return p;
+    }
 }

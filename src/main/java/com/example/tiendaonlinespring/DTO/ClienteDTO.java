@@ -1,5 +1,6 @@
 package com.example.tiendaonlinespring.DTO;
 
+import com.example.tiendaonlinespring.Modelo.Cliente;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -34,4 +35,29 @@ public class ClienteDTO {
 
     @NotBlank(message = "La dirección no puede estar vacía")
     private String address;
+
+    public Cliente createCliente(ClienteDTO clienteDTO) {
+        Cliente c = new Cliente();
+        c.setNombre(clienteDTO.getName());
+        c.setApellido(clienteDTO.getSurname());
+        c.setNickname(clienteDTO.getNickname());
+        c.setPassword(clienteDTO.getPassword());
+        c.setTelefono(clienteDTO.getPhone());
+        c.setDomicilio(clienteDTO.getAddress());
+
+        return c;
+    }
+
+    public Cliente createClientWithID(ClienteDTO clienteDTO, int id) {
+        Cliente c = new Cliente();
+        c.setNombre(clienteDTO.getName());
+        c.setApellido(clienteDTO.getSurname());
+        c.setNickname(clienteDTO.getNickname());
+        c.setPassword(clienteDTO.getPassword());
+        c.setTelefono(clienteDTO.getPhone());
+        c.setDomicilio(clienteDTO.getAddress());
+        c.setId(id);
+
+        return c;
+    }
 }
