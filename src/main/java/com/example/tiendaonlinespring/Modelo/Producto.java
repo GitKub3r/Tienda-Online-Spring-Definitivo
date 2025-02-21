@@ -41,6 +41,16 @@ public class Producto {
     @JsonBackReference
     private Set<Historial> historials = new LinkedHashSet<>();
 
+    @Transient
+    public String getCategoriaProducto() {
+        if (precio.compareTo(new BigDecimal("10")) < 0) {
+            return "producto de oferta";
+        } else if (precio.compareTo(new BigDecimal("200")) > 0) {
+            return "producto de calidad";
+        }
+        return "producto estándar";
+    }
+
     public Integer getId() {
         return id;
     }

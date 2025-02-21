@@ -30,6 +30,10 @@ public class ProductoService {
     }
 
     public ResponseEntity<String> add(ProductoDTO product) {
+        if(repo.existsByNombre(product.getName())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El nombre del producto ya existe");
+        }
+
         Producto p = createProducto(product);
         repo.save(p);
         return ResponseEntity.status(HttpStatus.CREATED).body("Se ha añadido un nuevo producto");

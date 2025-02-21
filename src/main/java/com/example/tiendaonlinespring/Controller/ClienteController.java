@@ -3,8 +3,10 @@ package com.example.tiendaonlinespring.Controller;
 import com.example.tiendaonlinespring.DTO.ClienteDTO;
 import com.example.tiendaonlinespring.Modelo.Cliente;
 import com.example.tiendaonlinespring.Service.ClienteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,12 +29,26 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addClient(@RequestBody ClienteDTO client) {
+    public ResponseEntity<?> addClient(@Valid @RequestBody ClienteDTO client, BindingResult result) {
+        if (result.hasErrors()) {
+            List<String> errors = result.getAllErrors()
+                    .stream()
+                    .map(error -> error.getDefaultMessage())
+                    .toList();
+            return ResponseEntity.badRequest().body(errors);
+        }
         return service.add(client);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<String> updateClient(@RequestBody ClienteDTO client, @PathVariable int id) {
+    public ResponseEntity<?> updateClient(@Valid @RequestBody ClienteDTO client, BindingResult result, @PathVariable int id) {
+        if (result.hasErrors()) {
+            List<String> errors = result.getAllErrors()
+                    .stream()
+                    .map(error -> error.getDefaultMessage())
+                    .toList();
+            return ResponseEntity.badRequest().body(errors);
+        }
         return service.update(client, id);
     }
 

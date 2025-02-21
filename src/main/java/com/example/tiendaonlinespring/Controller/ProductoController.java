@@ -1,12 +1,12 @@
 package com.example.tiendaonlinespring.Controller;
 
 import com.example.tiendaonlinespring.DTO.ProductoDTO;
-import com.example.tiendaonlinespring.DTO.ProductoDTO;
-import com.example.tiendaonlinespring.Modelo.Producto;
 import com.example.tiendaonlinespring.Modelo.Producto;
 import com.example.tiendaonlinespring.Service.ProductoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,12 +29,26 @@ public class ProductoController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addProduct(@RequestBody ProductoDTO product) {
+    public ResponseEntity<?> addProduct(@Valid @RequestBody ProductoDTO product, BindingResult result) {
+        if (result.hasErrors()) {
+            List<String> errors = result.getAllErrors()
+                    .stream()
+                    .map(error -> error.getDefaultMessage())
+                    .toList();
+            return ResponseEntity.badRequest().body(errors);
+        }
         return service.add(product);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<String> updateProduct(@RequestBody ProductoDTO product, @PathVariable int id) {
+    public ResponseEntity<?> updateProduct(@Valid @RequestBody ProductoDTO product, BindingResult result, @PathVariable int id) {
+        if (result.hasErrors()) {
+            List<String> errors = result.getAllErrors()
+                    .stream()
+                    .map(error -> error.getDefaultMessage())
+                    .toList();
+            return ResponseEntity.badRequest().body(errors);
+        }
         return service.update(product, id);
     }
 

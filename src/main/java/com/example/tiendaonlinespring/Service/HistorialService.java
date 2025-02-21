@@ -54,10 +54,15 @@ public class HistorialService {
                 }
 
             case "Devolución":
-                long remainDays = ChronoUnit.DAYS.between(h.getFechaCompra(), LocalDate.now());
+                long remainDays = ChronoUnit.DAYS.between(h.getFechaCompra(), LocalDate.now().minusYears(1));
+                System.out.println("Fecha de compra: " + h.getFechaCompra());
+                System.out.println("Hoy: " + LocalDate.now());
+                System.out.println("Diferencia: " + remainDays);
 
                 if (remainDays > 30) {
                     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Han pasado más de 30 días desde la compra");
+                } else if (remainDays < 0) {
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body("La fecha de compra del producto no coincide");
                 } else {
                     repo.save(h);
 
